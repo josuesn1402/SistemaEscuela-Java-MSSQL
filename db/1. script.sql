@@ -39,13 +39,17 @@ CREATE TABLE Matriculas (
     codt INT,  -- Código del turno
     Fecha DATETIME,  -- Fecha de la matrícula
     FOREIGN KEY (code) REFERENCES Estudiantes(code),  -- Clave foránea que referencia al estudiante
-    FOREIGN KEY (codl) REFERENCES Lectivo(codl)  -- Clave foránea que referencia al período lectivo
+    FOREIGN KEY (codl) REFERENCES Lectivo(codl),  -- Clave foránea que referencia al período lectivo
+    FOREIGN KEY (codt) REFERENCES Turno(codt)  -- Clave foránea que referencia al turno
 );
 GO
 
 CREATE TABLE Detalle_Matriculas (
-    idMatricula VARCHAR(10) PRIMARY KEY,  -- Identificador de la matrícula
+    idMatricula VARCHAR(10),  -- Identificador de la matrícula
     codcur VARCHAR(10),  -- Código del curso
     Nota INT,  -- Nota obtenida en el curso
+    PRIMARY KEY (idMatricula, codcur),  -- Clave primaria compuesta por idMatricula y codcur
+    FOREIGN KEY (idMatricula) REFERENCES Matriculas(idMatricula),  -- Clave foránea que referencia a Matriculas
     FOREIGN KEY (codcur) REFERENCES Cursos(codcur)  -- Clave foránea que referencia al curso
 );
+GO

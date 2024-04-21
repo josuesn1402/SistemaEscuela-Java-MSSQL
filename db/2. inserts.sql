@@ -28,7 +28,7 @@ VALUES
 -- Insertar datos en la tabla Matriculas
 INSERT INTO Matriculas (idMatricula, code, codl, codt, Fecha)
 VALUES 
-('M0001', 'E0001', 'L0001', 1, '2024-04-19 00:00:00.000');
+('M0001', 'E0001', 'L0001', 1, '19-04-2024');
 
 -- Insertar datos en la tabla Turno
 INSERT INTO Turno (codt, dest)

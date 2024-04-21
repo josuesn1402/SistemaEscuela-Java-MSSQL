@@ -9,9 +9,9 @@ public class Conexion {
     String result = "conexion fallida";
 
     String connectionUrl
-      = "jdbc:sqlserver://192.168.30.30:1433;"
+      = "jdbc:sqlserver://localhost:1433;"
       + "database=bdescuela;"
-      + "user=conectar;"
+      + "user=Conectar;"
       + "password=sql2024;"
       + "encrypt=true;"
       + "trustServerCertificate=true;"
