@@ -9,16 +9,18 @@ public class Matricula {
   private String codigoLectivo;
   private int codigoTurno;
   private Date fecha;
+  private String codigoCurso;
 
   public Matricula() {
   }
 
-  public Matricula(String idMatricula, String codigoEstudiante, String codigoLectivo, int codigoTurno, Date fecha) {
+  public Matricula(String idMatricula, String codigoEstudiante, String codigoLectivo, int codigoTurno, Date fecha, String codigoCurso) {
     this.idMatricula = idMatricula;
     this.codigoEstudiante = codigoEstudiante;
     this.codigoLectivo = codigoLectivo;
     this.codigoTurno = codigoTurno;
     this.fecha = fecha;
+    this.codigoCurso = codigoCurso;
   }
 
   public String getIdMatricula() {
@@ -59,5 +61,13 @@ public class Matricula {
 
   public void setFecha(Date fecha) {
     this.fecha = fecha;
+  }
+  
+  public String getCodigoCurso() {
+    return codigoCurso;
+  }
+
+  public void setCodigoCurso(String codigoLectivo) {
+    this.codigoCurso = codigoCurso;
   }
 }

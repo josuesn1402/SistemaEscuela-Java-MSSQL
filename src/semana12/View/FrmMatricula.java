@@ -1,13 +1,41 @@
 package semana12.View;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import javax.swing.JComboBox;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
+import semana12.Controller.CtrlMatricula;
+import semana12.Model.Entity.Matricula;
+
 public class FrmMatricula extends javax.swing.JFrame {
 
-  public FrmMatricula() {
-    initComponents();
-    this.setLocationRelativeTo(null);
-  }
+    CtrlMatricula ctrl = new CtrlMatricula();
+    private String idMatriculaSeleccionada;
 
-  @SuppressWarnings("unchecked")
+    public FrmMatricula() {
+        initComponents();
+        this.setLocationRelativeTo(null);
+        cargarComboBoxes();
+        cargarTabla();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String fechaActual = sdf.format(new Date());
+        txtFecha.setText(fechaActual);
+
+        jtMatriculas.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent e) {
+                if (!e.getValueIsAdjusting()) {
+                    int filaSeleccionada = jtMatriculas.getSelectedRow();
+                    if (filaSeleccionada != -1) {
+                        idMatriculaSeleccionada = (String) jtMatriculas.getValueAt(filaSeleccionada, 0);
+                    }
+                }
+            }
+        });
+    }
+
+    @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -22,10 +50,10 @@ public class FrmMatricula extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         cboTurno = new javax.swing.JComboBox<>();
         jLabel7 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtFecha = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        jtMatriculas = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
         btnNuevo = new javax.swing.JButton();
         btnGuardar = new javax.swing.JButton();
@@ -71,7 +99,7 @@ public class FrmMatricula extends javax.swing.JFrame {
         jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel7.setText("Turno:");
 
-        jTextField1.setEditable(false);
+        txtFecha.setEditable(false);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -102,7 +130,7 @@ public class FrmMatricula extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(cboLectivo, 0, 150, Short.MAX_VALUE)
-                    .addComponent(jTextField1))
+                    .addComponent(txtFecha))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -117,7 +145,7 @@ public class FrmMatricula extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel5)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel3)
@@ -136,7 +164,7 @@ public class FrmMatricula extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel2.setText("Administrador de Matriculas");
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        jtMatriculas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -147,7 +175,7 @@ public class FrmMatricula extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane2.setViewportView(jTable2);
+        jScrollPane2.setViewportView(jtMatriculas);
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder("")));
 
@@ -159,8 +187,18 @@ public class FrmMatricula extends javax.swing.JFrame {
         });
 
         btnGuardar.setText("GUARDAR");
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarActionPerformed(evt);
+            }
+        });
 
         btnEditar.setText("EDITAR");
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
 
         btnEliminar.setText("ELIMINAR");
 
@@ -223,6 +261,36 @@ public class FrmMatricula extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void cargarTabla() {
+        CtrlMatricula ctrl = new CtrlMatricula();
+
+        DefaultTableModel modeloTabla = ctrl.obtenerDatosDeTabla();
+
+        jtMatriculas.setModel(modeloTabla);
+    }
+
+    public void cargarComboBoxes() {
+        DefaultTableModel modeloDesCur = ctrl.obtenerDesCur();
+        cargarComboBoxDesdeModelo(modeloDesCur, cboCurso);
+
+        DefaultTableModel modeloDest = ctrl.obtenerDest();
+        cargarComboBoxDesdeModelo(modeloDest, cboTurno);
+
+        DefaultTableModel modeloDesl = ctrl.obtenerDesl();
+        cargarComboBoxDesdeModelo(modeloDesl, cboLectivo);
+
+        DefaultTableModel modeloNombresEstudiantes = ctrl.obtenerNombresEstudiantes();
+        cargarComboBoxDesdeModelo(modeloNombresEstudiantes, cboEstudiante);
+    }
+
+    private void cargarComboBoxDesdeModelo(DefaultTableModel modelo, JComboBox<String> comboBox) {
+        comboBox.removeAllItems(); // Limpiar el ComboBox antes de cargar nuevos elementos
+        int rowCount = modelo.getRowCount();
+        for (int i = 0; i < rowCount; i++) {
+            comboBox.addItem((String) modelo.getValueAt(i, 0)); // Agregar cada elemento del modelo al ComboBox
+        }
+    }
+
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         cboEstudiante.setSelectedIndex(0);
         cboCurso.setSelectedIndex(0);
@@ -231,30 +299,71 @@ public class FrmMatricula extends javax.swing.JFrame {
         cboEstudiante.requestFocus();
     }//GEN-LAST:event_btnNuevoActionPerformed
 
-  public static void main(String args[]) {
-    try {
-      for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-        if ("Windows".equals(info.getName())) {
-          javax.swing.UIManager.setLookAndFeel(info.getClassName());
-          break;
-        }
-      }
-    } catch (ClassNotFoundException ex) {
-      java.util.logging.Logger.getLogger(FrmMatricula.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-    } catch (InstantiationException ex) {
-      java.util.logging.Logger.getLogger(FrmMatricula.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-    } catch (IllegalAccessException ex) {
-      java.util.logging.Logger.getLogger(FrmMatricula.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-    } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-      java.util.logging.Logger.getLogger(FrmMatricula.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-    }
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+        String codigoEstudiante = String.valueOf(cboEstudiante.getSelectedIndex() + 1);
+        String codigoLectivo = String.valueOf(cboLectivo.getSelectedIndex() + 1);
+        int codigoTurno = (Integer) cboTurno.getSelectedIndex()+ 1;
+        String codigoCurso = String.valueOf(cboCurso.getSelectedIndex() + 1);
+        java.sql.Date fechaActual = new java.sql.Date(new Date().getTime());
 
-    java.awt.EventQueue.invokeLater(new Runnable() {
-      public void run() {
-        new FrmMatricula().setVisible(true);
-      }
-    });
-  }
+        Matricula matricula = new Matricula();
+        matricula.setCodigoEstudiante(codigoEstudiante);
+        matricula.setCodigoLectivo(codigoLectivo);
+        matricula.setCodigoTurno(codigoTurno);
+        matricula.setCodigoCurso(codigoCurso);
+        matricula.setFecha(fechaActual);
+
+        ctrl.insertarMatricula(matricula);
+
+        cargarTabla();
+        btnNuevo.doClick();
+    }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        String codigoEstudiante = String.valueOf(cboEstudiante.getSelectedIndex() + 1);
+        String codigoLectivo = String.valueOf(cboLectivo.getSelectedIndex() + 1);
+        int codigoTurno = (Integer) cboTurno.getSelectedIndex() + 1;
+        String codigoCurso = String.valueOf(cboCurso.getSelectedIndex() + 1);
+        java.sql.Date fechaActual = new java.sql.Date(new Date().getTime());
+
+        Matricula matricula = new Matricula();
+        matricula.setIdMatricula(idMatriculaSeleccionada);
+        matricula.setCodigoEstudiante(codigoEstudiante);
+        matricula.setCodigoLectivo(codigoLectivo);
+        matricula.setCodigoTurno(codigoTurno);
+        matricula.setCodigoCurso(codigoCurso);
+        matricula.setFecha(fechaActual);
+
+        ctrl.modificarMatricula(matricula);
+
+        cargarTabla();
+        btnNuevo.doClick();
+    }//GEN-LAST:event_btnEditarActionPerformed
+
+    public static void main(String args[]) {
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Windows".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(FrmMatricula.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(FrmMatricula.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(FrmMatricula.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(FrmMatricula.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new FrmMatricula().setVisible(true);
+            }
+        });
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEditar;
@@ -275,7 +384,7 @@ public class FrmMatricula extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable2;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTable jtMatriculas;
+    private javax.swing.JTextField txtFecha;
     // End of variables declaration//GEN-END:variables
 }
