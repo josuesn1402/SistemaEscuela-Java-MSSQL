@@ -39,7 +39,7 @@ public class FrmEstudiante extends javax.swing.JFrame {
     txtApeMaterno = new javax.swing.JTextField();
     txtApePaterno = new javax.swing.JTextField();
     txtEdad = new javax.swing.JTextField();
-    cboGenero = new javax.swing.JComboBox<String>();
+    cboGenero = new javax.swing.JComboBox<>();
     jLabel2 = new javax.swing.JLabel();
     jScrollPane2 = new javax.swing.JScrollPane();
     tbEstudiante = new javax.swing.JTable();
@@ -83,7 +83,7 @@ public class FrmEstudiante extends javax.swing.JFrame {
     txtEdad.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
     cboGenero.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-    cboGenero.setModel(new javax.swing.DefaultComboBoxModel<String>(new String[] { "- Seleccionar -" }));
+    cboGenero.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "- Seleccionar -", "M", "F" }));
 
     javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
     jPanel1.setLayout(jPanel1Layout);
@@ -151,6 +151,11 @@ public class FrmEstudiante extends javax.swing.JFrame {
 
       }
     ));
+    tbEstudiante.addMouseListener(new java.awt.event.MouseAdapter() {
+      public void mouseClicked(java.awt.event.MouseEvent evt) {
+        tbEstudianteMouseClicked(evt);
+      }
+    });
     jScrollPane2.setViewportView(tbEstudiante);
 
     jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder("")));
@@ -265,6 +270,9 @@ public class FrmEstudiante extends javax.swing.JFrame {
       estudiante.setGenero(genero);
 
       estudianteCtrl.modificarEstudiante(estudiante);
+
+      DefaultTableModel model = (DefaultTableModel) tbEstudiante.getModel();
+      cargarEstudiantesEnTabla(model);
     } else {
       JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos y asegúrese de que la Edad sea un número entero.", "Campos Incompletos o Incorrectos", JOptionPane.ERROR_MESSAGE);
     }
@@ -292,6 +300,9 @@ public class FrmEstudiante extends javax.swing.JFrame {
       estudiante.setGenero(genero);
 
       estudianteCtrl.agregarEstudiante(estudiante);
+
+      DefaultTableModel model = (DefaultTableModel) tbEstudiante.getModel();
+      cargarEstudiantesEnTabla(model);
     } else {
       JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos y asegúrese de que la Edad sea un número entero.", "Campos Incompletos o Incorrectos", JOptionPane.ERROR_MESSAGE);
     }
@@ -300,6 +311,19 @@ public class FrmEstudiante extends javax.swing.JFrame {
   private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
     System.exit(0);
   }//GEN-LAST:event_btnSalirActionPerformed
+
+  private void tbEstudianteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbEstudianteMouseClicked
+    int filaSeleccionada = tbEstudiante.getSelectedRow();
+    if (filaSeleccionada >= 0) {
+      DefaultTableModel model = (DefaultTableModel) tbEstudiante.getModel();
+      txtCodigo.setText(model.getValueAt(filaSeleccionada, 0).toString());
+      txtNombre.setText(model.getValueAt(filaSeleccionada, 1).toString());
+      txtApePaterno.setText(model.getValueAt(filaSeleccionada, 2).toString());
+      txtApeMaterno.setText(model.getValueAt(filaSeleccionada, 3).toString());
+      txtEdad.setText(model.getValueAt(filaSeleccionada, 4).toString());
+      cboGenero.setSelectedItem(model.getValueAt(filaSeleccionada, 5).toString());
+    }
+  }//GEN-LAST:event_tbEstudianteMouseClicked
 
   private void Limpiar() {
     txtCodigo.setText("");
