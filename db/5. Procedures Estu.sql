@@ -17,12 +17,12 @@ GO
 CREATE PROCEDURE sp_ListarEstudiantes
 AS
 BEGIN
-    SELECT code AS Codigo,
-           apae AS ApellidoPaterno,
-           amae AS ApellidoMaterno,
-           nome AS Nombre,
-           edae AS Edad,
-           sexe AS Sexo
+    SELECT code AS codigo,
+           apae AS apellido_paterno,
+           amae AS apellido_materno,
+           nome AS nombre,
+           edae AS edad,
+           sexe AS genero
     FROM Estudiantes;
 END;
 GO
@@ -33,11 +33,11 @@ CREATE PROCEDURE sp_AgregarEstudiante
     @apellidoMaterno VARCHAR(50),
     @nombre VARCHAR(50),
     @edad INT,
-    @sexo CHAR(1)
+    @genero CHAR(1)
 AS
 BEGIN
     INSERT INTO Estudiantes (code, apae, amae, nome, edae, sexe)
-    VALUES (@codigo, @apellidoPaterno, @apellidoMaterno, @nombre, @edad, @sexo);
+    VALUES (@codigo, @apellidoPaterno, @apellidoMaterno, @nombre, @edad, @genero);
 END;
 GO
 
@@ -47,7 +47,7 @@ CREATE PROCEDURE sp_ModificarEstudiante
     @apellidoMaterno VARCHAR(50),
     @nombre VARCHAR(50),
     @edad INT,
-    @sexo CHAR(1)
+    @genero CHAR(1)
 AS
 BEGIN
     UPDATE Estudiantes
@@ -55,7 +55,7 @@ BEGIN
         amae = @apellidoMaterno,
         nome = @nombre,
         edae = @edad,
-        sexe = @sexo
+        sexe = @genero
     WHERE code = @codigo;
 END;
 GO

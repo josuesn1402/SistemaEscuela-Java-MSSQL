@@ -7,18 +7,18 @@ public class Estudiante {
   private String apellidoMaterno;
   private String nombre;
   private int edad;
-  private char sexo;
+  private String genero;
 
   public Estudiante() {
   }
 
-  public Estudiante(String codigo, String apellidoPaterno, String apellidoMaterno, String nombre, int edad, char sexo) {
+  public Estudiante(String codigo, String apellidoPaterno, String apellidoMaterno, String nombre, int edad, String genero) {
     this.codigo = codigo;
     this.apellidoPaterno = apellidoPaterno;
     this.apellidoMaterno = apellidoMaterno;
     this.nombre = nombre;
     this.edad = edad;
-    this.sexo = sexo;
+    this.genero = genero;
   }
 
   public String getCodigo() {
@@ -61,11 +61,11 @@ public class Estudiante {
     this.edad = edad;
   }
 
-  public char getSexo() {
-    return sexo;
+  public String getGenero() {
+    return genero;
   }
 
-  public void setSexo(char sexo) {
-    this.sexo = sexo;
+  public void setGenero(String genero) {
+    this.genero = genero;
   }
 }
