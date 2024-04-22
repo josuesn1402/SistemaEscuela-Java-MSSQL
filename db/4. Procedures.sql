@@ -20,6 +20,36 @@ BEGIN
 END;
 GO
 
+CREATE PROCEDURE ObtenerDesCur
+AS
+BEGIN
+    SELECT descur FROM Cursos;
+END;
+GO
+
+exec ObtenerDesCur
+
+CREATE PROCEDURE ObtenerDest
+AS
+BEGIN
+    SELECT dest FROM Turno;
+END;
+GO
+
+CREATE PROCEDURE ObtenerDesl
+AS
+BEGIN
+    SELECT desl FROM Lectivo;
+END;
+GO
+
+CREATE PROCEDURE ObtenerNombresEstudiantes
+AS
+BEGIN
+    SELECT apae + ' ' + amae + ' ' + nome AS NombreCompleto FROM Estudiantes;
+END;
+GO
+
 exec sp_columns Turno
 
 select * from Estudiantes
