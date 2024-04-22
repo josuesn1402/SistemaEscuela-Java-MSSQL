@@ -6,7 +6,6 @@ public class Semana12 {
 
   public static void main(String[] args) {
     Conexion conexion = new Conexion();
-    System.out.println(conexion.conexion());
   }
 
 }

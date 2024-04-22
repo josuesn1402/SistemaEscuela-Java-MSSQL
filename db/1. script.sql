@@ -1,3 +1,10 @@
+IF EXISTS (SELECT * FROM sys.databases WHERE name = N'bdescuela')
+BEGIN
+    ALTER DATABASE bdescuela SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+    DROP DATABASE bdescuela;
+END
+GO
+
 CREATE DATABASE bdescuela;
 GO
 
@@ -52,4 +59,3 @@ CREATE TABLE Detalle_Matriculas (
     FOREIGN KEY (idMatricula) REFERENCES Matriculas(idMatricula),  -- Clave foránea que referencia a Matriculas
     FOREIGN KEY (codcur) REFERENCES Cursos(codcur)  -- Clave foránea que referencia al curso
 );
-GO
